@@ -1,0 +1,23 @@
+function cauchy_dev = cauchyStress(params,I1bar,I2bar, ...
+                                I3bar, ...
+                                I4alpha,I5alpha, ...
+                                Bbar, ...
+                                dev_fiber_dyadI4, ...
+                                dev_fiber_dyadI5, ...
+                                J)
+    
+                            
+    dervUdI1 = diffUdI1(params,I1bar,I2bar,I3bar,I4alpha,I5alpha);
+    dervUdI2 = diffUdI2(params,I1bar,I2bar,I3bar,I4alpha,I5alpha);
+    dervUdI3 = diffUdI3(params,I1bar,I2bar,I3bar,I4alpha,I5alpha);
+    dervUdI4alpha = diffUdI4alpha(params,I1bar,I3bar,I2bar,I4alpha,I5alpha);
+    dervUdI5alpha = diffUdI5alpha(params,I1bar,I3bar,I2bar,I4alpha,I5alpha);
+    dev_Bbar = deviatoric(Bbar);
+    comp1 = (dervUdI1 + I1bar * dervUdI2) * dev_Bbar - dervUdI2 * (dev_Bbar*dev_Bbar);
+    
+    cauchy_dev = 2/J* deviatoric(comp1) +  2*dervUdI4alpha * dev_fiber_dyadI4 + ...
+        dervUdI5alpha * dev_fiber_dyadI5;
+    cauchy_stress = dervUdI3 * I3bar * eye(3) + 
+
+end
+
